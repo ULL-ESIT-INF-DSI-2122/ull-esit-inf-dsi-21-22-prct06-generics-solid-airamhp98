@@ -1,11 +1,9 @@
 
 /* eslint-disable max-len */
-import {Pokemon} from "./Pokemon";
-import {DC} from "./Dc";
 import {Fighter} from "./Fighter";
-import {Marvel} from "./Marvel";
+
 /**
- * clase Combat que simula un combate entre dos pokemons
+ * clase Combat que simula un combate entre dos luchadores
  */
 export class Combat<T extends Fighter, L extends Fighter> {
   private Fighter1:T;
@@ -14,18 +12,16 @@ export class Combat<T extends Fighter, L extends Fighter> {
     this.Fighter1 = Fighter1;
     this.Fighter2 = Fighter2;
   }
-
+  /**
+ * Metodo start que comienza la simulacion del combate
+ * @returns un luchador, el cual es el ganador del mismo.
+ */
   start():Fighter|undefined {
     const Fighter1Type = this.Fighter1.getType();
     const Fighter2Type = this.Fighter2.getType();
-    const Fighter1Stats = this.Fighter1.getStats();
-    const Fighter2Stats = this.Fighter2.getStats();
     let efficiency1: number = 1;
     let efficiency2: number = 1;
-    // Marvel>DC>Pokemon>Marvel si los dos luchadores son pokemons codigo viejo, si son del mismo universo efectividad =0.5
     if (this.Fighter1.getUniverse() === this.Fighter2.getUniverse()) {
-      // si los dos luchadores son del mismo universo
-
       if (Fighter1Type === Fighter2Type) {
         efficiency1 = 0.5;
         efficiency2 = 0.5;
@@ -145,35 +141,39 @@ export class Combat<T extends Fighter, L extends Fighter> {
               break;
           }
       }
-      const Fighter1Hit:number = Math.round((50* (Fighter1Stats.attack / Fighter2Stats.defense) * efficiency1));
-      const Fighter2Hit:number = Math.round((50* (Fighter2Stats.attack / Fighter1Stats.defense) * efficiency2));
+    }
 
-      while (Fighter1Stats.hp > 0 || Fighter2Stats.hp > 0) {
-        this.Fighter2.setHp(Fighter2Stats.hp - Fighter1Hit);
-        console.log(this.Fighter1.getName() + " golpea a " + this.Fighter2.getName() + " le quita " + Fighter1Hit);
-        console.log(this.Fighter1.getPhrase());
-        console.log("Al luchador " + this.Fighter2.getName() + " le quedan " + this.Fighter2.getStats().hp + " puntos de vida");
+    const Fighter1Hit:number = Math.round((50* (this.Fighter1.getStats().attack / this.Fighter2.getStats().defense) * efficiency1));
+    const Fighter2Hit:number = Math.round((50* (this.Fighter2.getStats().attack / this.Fighter1.getStats().defense) * efficiency2));
+    const hp1 = this.Fighter1.getStats().hp;
+    const hp2 = this.Fighter2.getStats().hp;
+    while (this.Fighter1.getStats().hp > 0 && this.Fighter2.getStats().hp > 0) {
+      console.log(':D');
+      this.Fighter2.setHp(this.Fighter2.getStats().hp - Fighter1Hit);
+      console.log(this.Fighter1.getName() + " golpea a " + this.Fighter2.getName() + " le quita " + Fighter1Hit);
+      console.log(this.Fighter1.getPhrase());
+      console.log("Al luchador " + this.Fighter2.getName() + " le quedan " + this.Fighter2.getStats().hp + " puntos de vida");
 
-        if (this.Fighter2.getStats().hp <= 0 ) {
-          console.log(this.Fighter2.getName() + " ha sido debilitado");
-          return this.Fighter1;
-        } // check pokemon 2 vida
+      if (this.Fighter2.getStats().hp <= 0 ) {
+        console.log(this.Fighter2.getName() + " ha sido debilitado");
+        this.Fighter1.setHp(hp1);
+        this.Fighter2.setHp(hp2);
+        return this.Fighter1;
+      }
 
-        this.Fighter1.setHp(Fighter1Stats.hp - Fighter2Hit);
-        console.log(this.Fighter2.getName() + " golpea a " + this.Fighter1.getName() + " le quita " + Fighter2Hit);
-        console.log(this.Fighter2.getPhrase());
-        console.log("Al luchador " + this.Fighter1.getName() + " le quedan " + this.Fighter1.getStats().hp + " puntos de vida");
+      this.Fighter1.setHp(this.Fighter1.getStats().hp - Fighter2Hit);
+      console.log(this.Fighter2.getName() + " golpea a " + this.Fighter1.getName() + " le quita " + Fighter2Hit);
+      console.log(this.Fighter2.getPhrase());
+      console.log("Al luchador " + this.Fighter1.getName() + " le quedan " + this.Fighter1.getStats().hp + " puntos de vida");
 
-        if (this.Fighter1.getStats().hp <= 0 ) {
-          console.log(this.Fighter1.getName() + " ha sido debilitado");
-          return this.Fighter2;
-        }
+      if (this.Fighter1.getStats().hp <= 0 ) {
+        console.log(this.Fighter1.getName() + " ha sido debilitado");
+        this.Fighter1.setHp(hp1);
+        this.Fighter2.setHp(hp2);
+        return this.Fighter2;
       }
     }
   }
 }
-
-
-// console.log(Pokedex1.getPokemon(0));
 
 
