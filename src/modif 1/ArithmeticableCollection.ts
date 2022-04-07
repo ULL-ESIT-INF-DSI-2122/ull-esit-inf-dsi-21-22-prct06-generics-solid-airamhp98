@@ -1,3 +1,4 @@
+
 /* import {Arithmeticable} from "./Arithmeticable";
  class ArithmeticableCollection<T> implements Arithmeticable<T> {
   constructor(private items: T[]) {

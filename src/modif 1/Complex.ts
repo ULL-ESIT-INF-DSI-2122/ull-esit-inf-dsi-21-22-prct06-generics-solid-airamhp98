@@ -1,3 +1,4 @@
+
 /* eslint-disable max-len */
 import {Arithmeticable} from "./Arithmeticable";
 class Complex implements Arithmeticable<Complex> {
